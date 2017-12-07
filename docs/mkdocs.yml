@@ -1,0 +1,4 @@
+site_name: Triggers Service
+theme: readthedocs
+site_dir: ../public/triggers/docs
+repo_url: https://github.com/bark-iot/trigger-service/
