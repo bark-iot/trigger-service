@@ -1,4 +1,4 @@
-class CreateTableDevices < Sequel::Migration
+class CreateTableTriggers < Sequel::Migration
   def up
     create_table :triggers do
       primary_key :id

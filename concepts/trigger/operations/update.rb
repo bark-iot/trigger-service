@@ -36,11 +36,11 @@ class Trigger < Sequel::Model(DB)
     end
 
     def log_success(options, params:, model:, **)
-      LOGGER.info "[#{self.class}] Updated device with params #{params.to_json}. Trigger: #{Trigger::Representer.new(model).to_json}"
+      LOGGER.info "[#{self.class}] Updated trigger with params #{params.to_json}. Trigger: #{Trigger::Representer.new(model).to_json}"
     end
 
     def log_failure(options, params:, **)
-      LOGGER.info "[#{self.class}] Failed to update device with params #{params.to_json}"
+      LOGGER.info "[#{self.class}] Failed to update trigger with params #{params.to_json}"
     end
   end
 end
