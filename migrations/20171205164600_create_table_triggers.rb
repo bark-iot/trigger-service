@@ -6,6 +6,7 @@ class CreateTableTriggers < Sequel::Migration
       column :title, String
       column :key, String
       column :output, :jsonb
+      column :type, Integer # 0 - system, 1 - device
       column :created_at, :timestamp
       column :updated_at, :timestamp
     end

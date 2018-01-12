@@ -11,8 +11,18 @@ set :bind, '0.0.0.0'
 set :port, 80
 set :public_folder, 'public'
 
-get '/devices/docs' do
-  redirect '/devices/docs/index.html'
+get '/triggers/docs' do
+  redirect '/triggers/docs/index.html'
+end
+
+get '/triggers/system' do
+  result = Trigger::ListSystem.()
+  if result.success?
+    body Trigger::Representer.for_collection.new(result['models']).to_json
+  else
+    status 422
+    body result['contract.default'].errors.messages.uniq.to_json
+  end
 end
 
 namespace '/houses/:house_id/devices/:device_id' do

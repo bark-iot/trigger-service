@@ -36,12 +36,14 @@ key           | required
   "title": "MyTrigger",
   "key": "my_trigger",
   "output": "[{\"key\":\"temp\",\"type\":\"int\"}]",
+  "type": 1,
   "created_at": "2017-11-11 11:04:44 UTC",
   "updated_at": "2017-1-11 11:04:44 UTC"
 }
 ```
 
 `output` is json encoded field listing data keys and types sent with trigger.
+`type` 0 is system trigger, 1 is device trigger.
 
 *Error Response [422]*
 
@@ -86,10 +88,13 @@ title         | required
   "title": "MyTrigger",
   "key": "my_trigger",
   "output": "[{\"key\":\"temp\",\"type\":\"int\"}]",
+  "type": 1,
   "created_at": "2017-11-11 11:04:44 UTC",
   "updated_at": "2017-1-11 11:04:44 UTC"
 }
 ```
+
+`type` 0 is system trigger, 1 is device trigger.
 
 *Error Response [422]*
 
@@ -124,11 +129,41 @@ device_id    | required
       "title": "MyTrigger",
       "key": "my_trigger",
       "output": "[{\"key\":\"temp\",\"type\":\"int\"}]",
+      "type": 1,
       "created_at": "2017-11-11 11:04:44 UTC",
       "updated_at": "2017-1-11 11:04:44 UTC"
     }
 ]
 ```
+
+`type` 0 is system trigger, 1 is device trigger.
+
+*Error Response [401]*
+
+No token provided
+
+## List System Triggers
+
+GET `/triggers/system`
+
+*Response [200]*
+
+```json
+[
+    {
+      "id": 1,
+      "device_id": 1,
+      "title": "MyTrigger",
+      "key": "my_trigger",
+      "output": "[{\"key\":\"temp\",\"type\":\"int\"}]",
+      "type": 0,
+      "created_at": "2017-11-11 11:04:44 UTC",
+      "updated_at": "2017-1-11 11:04:44 UTC"
+    }
+]
+```
+
+`type` 0 is system trigger, 1 is device trigger.
 
 *Error Response [401]*
 

@@ -1,6 +1,6 @@
 require 'securerandom'
 
-class Trigger < Sequel::Model(DB)
+class SystemTrigger
   class Create < Trailblazer::Operation
     extend Contract::DSL
 
@@ -14,7 +14,6 @@ class Trigger < Sequel::Model(DB)
     failure  :log_failure
 
     contract do
-      property :device_id
       property :title
       property :key
       property :output
@@ -22,14 +21,12 @@ class Trigger < Sequel::Model(DB)
       validation do
         configure do
           config.messages_file = 'config/error_messages.yml'
-          option :form
 
           def unique_key?(value)
-            Trigger.where(key: value).where(device_id: form.device_id).first.nil?
+            Trigger.where(key: value).where(device_id: nil).first.nil?
           end
         end
 
-        required(:device_id).filled
         required(:title).filled
         required(:key).filled
         rule(key: [:key]) do |key|
@@ -45,15 +42,15 @@ class Trigger < Sequel::Model(DB)
     end
 
     def set_type(options, model:, **)
-      model.type = Trigger::Types['device']
+      model.type = Trigger::Types['system']
     end
 
     def log_success(options, params:, model:, **)
-      LOGGER.info "[#{self.class}] Created trigger with params #{params.to_json}. Trigger: #{Trigger::Representer.new(model).to_json}"
+      LOGGER.info "[#{self.class}] Created system trigger with params #{params.to_json}. Trigger: #{Trigger::Representer.new(model).to_json}"
     end
 
     def log_failure(options, params:, **)
-      LOGGER.info "[#{self.class}] Failed to create trigger with params #{params.to_json}"
+      LOGGER.info "[#{self.class}] Failed to create system trigger with params #{params.to_json}"
     end
   end
 end

@@ -22,6 +22,23 @@ describe 'Devices Service' do
 
   #TODO: add delete device test
 
+  it 'should list all system triggers' do
+    trigger_title = system_trigger.title
+    header 'Authorization', "Bearer #{token}"
+    get 'triggers/system'
+
+    expect(last_response).to be_ok
+    body = JSON.parse(last_response.body)
+    expect(body[0]['title'] == trigger_title).to be_truthy
+  end
+
+  it 'should not list all system triggers for user with wrong token' do
+    header 'Authorization', 'Bearer wrong_token'
+    get 'triggers/system'
+
+    expect(last_response.status).to equal(401)
+  end
+
   it 'should show trigger' do
     header 'Authorization', "Bearer #{token}"
     get "/houses/1/devices/1/triggers/#{trigger.id}"
@@ -171,5 +188,9 @@ describe 'Devices Service' do
 
   def trigger
     Trigger::Create.(title: 'MyTrigger', key: 'my_trigger', device_id: 1, output: '[{"key":"temp","type":"int"}]')['model']
+    end
+
+  def system_trigger
+    SystemTrigger::Create.(title: 'PeriodicTrigger', key: 'periodic_trigger', output: '[{"key":"unixtime","type":"int"}]')['model']
   end
 end
