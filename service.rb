@@ -25,6 +25,20 @@ get '/triggers/system' do
   end
 end
 
+get '/houses/:house_id/triggers/:id/validate' do
+  result = Trigger::ValidateHouseId.(params.merge(authorization_header: request.env['HTTP_AUTHORIZATION'].to_s))
+  if result.success?
+    body Trigger::Representer.new(result['model']).to_json
+  else
+    if result['contract.default'] && result['contract.default'].errors.messages.size > 0
+      status 422
+      body result['contract.default'].errors.messages.uniq.to_json
+    else
+      status 404
+    end
+  end
+end
+
 namespace '/houses/:house_id/devices/:device_id' do
   get '/triggers' do
     result = Trigger::List.(device_id: params[:device_id])
