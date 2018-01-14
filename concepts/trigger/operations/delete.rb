@@ -7,6 +7,7 @@ class Trigger < Sequel::Model(DB)
     step Contract::Build()
     step Contract::Validate()
     step :delete
+    step :notify
     step :log_success
     failure  :log_failure
 
@@ -24,6 +25,10 @@ class Trigger < Sequel::Model(DB)
       options['model'] = Trigger.where(id: params[:id]).where(device_id: params[:device_id]).first
       return false unless options['model']
       options['model'].destroy
+    end
+
+    def notify(options, params:, **)
+      REDIS.publish 'triggers', {type: 'deleted', trigger: {id: params[:id]}}.to_json
     end
 
     def log_success(options, params:, **)
