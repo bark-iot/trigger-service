@@ -17,7 +17,7 @@ get '/triggers/docs' do
 end
 
 get '/triggers/system' do
-  result = Trigger::ListSystem.()
+  result = SystemTrigger::List.()
   if result.success?
     body Trigger::Representer.for_collection.new(result['models']).to_json
   else

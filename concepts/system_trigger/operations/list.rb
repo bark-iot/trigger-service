@@ -1,5 +1,5 @@
-class Trigger < Sequel::Model(DB)
-  class ListSystem < Trailblazer::Operation
+class SystemTrigger
+  class List < Trailblazer::Operation
     step :list_by_type
     failure  :log_failure
 
