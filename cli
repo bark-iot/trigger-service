@@ -7,7 +7,6 @@ end
 
 require './config/logging.rb'
 require './config/database.rb'
-require './config/concepts.rb'
 
 class MyCLI < Thor
   desc 'db_migrate [VERSION]', 'Migrate to VERSION or latest'
@@ -25,6 +24,7 @@ class MyCLI < Thor
 
   desc 'db_seed', 'Seed system triggers to DB'
   def db_seed
+    require './config/concepts.rb'
     SystemTrigger::Create.(title: 'PeriodicTrigger', key: 'periodic_trigger', output: '[{"key":"unixtime","type":"int"}]')
     puts 'Created Periodic Trigger'
   end
