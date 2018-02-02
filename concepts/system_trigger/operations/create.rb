@@ -1,10 +1,11 @@
 require 'securerandom'
+require_relative '../../trigger/operations/create'
 
 class SystemTrigger
   class Create < Trailblazer::Operation
     extend Contract::DSL
 
-    step Model(Trigger, :new)
+    step Model(::Trigger, :new)
     step Contract::Build()
     step Contract::Validate()
     step :set_timestamps
